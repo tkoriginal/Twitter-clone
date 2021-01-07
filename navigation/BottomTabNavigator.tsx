@@ -1,13 +1,19 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as React from "react";
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
+import {
+  BottomTabParamList,
+  HomeNavigatorParamList,
+  TabTwoParamList,
+} from "../types";
+
+import ProfilePicture from '../components/ProfilePicture'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -16,20 +22,46 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Home"
+      tabBarOptions={{
+        activeTintColor: Colors[colorScheme].tint,
+        showLabel: false,
+      }}
+    >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="Home"
+        component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="md-home" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Search"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-search" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Notifications"
+        component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-notifications-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Messages"
+        component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-mail" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -44,17 +76,38 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const HomeStack = createStackNavigator<HomeNavigatorParamList>();
 
-function TabOneNavigator() {
+function HomeNavigator() {
+  const colorScheme = useColorScheme();
+
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="HomeScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{
+          headerTitle: () => (
+            <Ionicons
+            size={30}
+            name={"logo-twitter"}
+            color={Colors[colorScheme].tint}
+            />
+            ),
+          headerRight: () => (
+            <MaterialCommunityIcons
+            name="star-four-points-outline"
+            size={30}
+            color={Colors[colorScheme].tint}
+            />
+            ),
+          headerRightContainerStyle: {
+            marginRight: 15
+          },
+          headerLeft: () => <ProfilePicture image={'https://pbs.twimg.com/profile_images/1252594551807754246/--PG7H_D_400x400.jpg'}/>
+        }}
       />
-    </TabOneStack.Navigator>
+    </HomeStack.Navigator>
   );
 }
 
@@ -66,7 +119,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: "Tab Two Title" }}
       />
     </TabTwoStack.Navigator>
   );
