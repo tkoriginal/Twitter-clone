@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, View } from '../components/Themed';
-import tweets from '../data/tweets'
-import Tweet from '../components/Tweet'
+import { View } from '../components/Themed';
+import Feed from '../components/Feed'
+
+import NewTweetButtons from '../components/NewTweetButton'
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Tweet tweet={tweets[0]}/>
+      <Feed />
+      <NewTweetButtons />
     </View>
   );
 }
@@ -18,5 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%'
   }
 });

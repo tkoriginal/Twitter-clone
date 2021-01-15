@@ -1,6 +1,7 @@
 export interface RootStackParamList {
   Root: undefined
   NotFound: undefined
+  NewTweet: undefined
 };
 
 export interface BottomTabParamList {
